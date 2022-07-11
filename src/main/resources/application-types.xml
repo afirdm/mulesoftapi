@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="orders-filled" format="json">
+      <types:shape format="weave" example="examples/orders-filled-1.json"><![CDATA[%dw 2.0
+
+type orders_filled = Array<{|  order_date: String,   symbol: String,   quantity: Number {"typeId": "int"},   price: Number {"typeId": "double"},   net_amount: Number {"typeId": "int"},   action: String,   tx_number: Number {"typeId": "int"},   status: String|}> {"example": "[{\\\"order_date\\\":\\\"2022-03-16T01:44:36\\\",\\\"symbol\\\":\\\"HPE\\\",\\\"quantity\\\":10,\\\"price\\\":14.00,\\\"net_amount\\\":140,\\\"action\\\":\\\"SELL\\\",\\\"tx_number\\\":2,\\\"status\\\":\\\"FILLED\\\"},{\\\"order_date\\\":\\\"2022-03-16T01:46:14\\\",\\\"symbol\\\":\\\"CRM\\\",\\\"quantity\\\":1200,\\\"price\\\":202.00,\\\"net_amount\\\":242.400,\\\"action\\\":\\\"BUY\\\",\\\"tx_number\\\":4,\\\"status\\\":\\\"FILLED\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#ddf747f8-94d3-4296-871f-a6274c57e76d">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="orders-filled"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

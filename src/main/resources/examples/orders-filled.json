@@ -1,0 +1,20 @@
+[{
+	"order_date": "2022-03-16T01:44:36",
+    "symbol": "HPE",
+    "quantity": 10,
+    "price": 14.00,
+    "net_amount": 140,
+  	"action": "SELL",
+    "tx_number": 2,
+    "status": "FILLED"
+  },
+  {
+  	"order_date": "2022-03-16T01:46:14",
+  	"symbol": "CRM",
+  	"quantity": 1200,
+  	"price": 202.00,
+  	"net_amount": 242.400,
+ 	"action": "BUY",
+  	"tx_number": 4,
+  	"status": "FILLED"
+}]  

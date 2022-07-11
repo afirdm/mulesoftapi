@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+    <http:listener-config name="mulesoftapi-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config name="mulesoftapi-config" api="mulesoftapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <db:config name="postgres" doc:name="Database Config" doc:id="c790df32-be63-46e9-9577-bde57621e2d5" >
+		<db:generic-connection driverClassName="org.postgresql.Driver" user="msbaservices" password="p20948e2533ba65bb25228e36d9da94cbc19e21a509b05090db8243337df2683a" url="jdbc:postgresql://ec2-3-233-69-242.compute-1.amazonaws.com:5432/d8i8iif1ss69vk"/>
+	</db:config>
+	<api-gateway:autodiscovery apiId="17971746" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="0e517a5f-d33b-4f55-a9a5-81b9772577a6" flowRef="mulesoftapi-main" />
+	<flow name="mulesoftapi-main">
+        <http:listener config-ref="mulesoftapi-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="mulesoftapi-config" doc:id="f9b4fb54-679c-4907-a339-735be11ddb92"/>
+        <error-handler>
+            <on-error-propagate type="APIKIT:BAD_REQUEST">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{error: "Bad request"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[400]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{error: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{error: "Method not allowed"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[405]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{error: "Not acceptable"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[406]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{error: "Unsupported media type"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[415]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{error: "Not Implemented"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[501]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="mulesoftapi-console">
+        <http:listener config-ref="mulesoftapi-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="mulesoftapi-config" doc:id="6b81e7d3-511f-4c9d-91d9-790beefc715f"/>
+        <error-handler>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{error: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="get:\orders:mulesoftapi-config">
+        <set-variable value="#[attributes.queryParams.'year' default &quot;2022&quot;]" doc:name="year" doc:id="26497fae-dcc5-4a69-8f92-2a1e70f9fe68" variableName="year"/>
+		<db:select doc:name="Get Orders By Year" doc:id="3a9175bc-5521-4e84-a7ae-83d65b80ae7a" config-ref="postgres">
+			<db:sql ><![CDATA[SELECT TX_NUMBER,
+	   ORDER_DATE,
+	   ACTION,
+	   STATUS,
+	   SYMBOL,
+	   QUANTITY,
+	   PRICE
+FROM ORDERS_HISTORY 
+WHERE to_char(ORDER_DATE,'YYYY') = :year]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{year: vars.year}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	order_date: payload01.order_date as String default "",
+	symbol: payload01.symbol,
+	quantity: payload01.quantity,
+	price: payload01.price,
+	action: payload01.action,
+	tx_number: payload01.tx_number,
+	status: payload01.status
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\orders-filled:mulesoftapi-config">
+        <db:select doc:name="Get Orders Filled" doc:id="a6e07b5b-e5ec-4c57-913d-04e05feddfd4" config-ref="postgres">
+			<db:sql ><![CDATA[SELECT TX_NUMBER,
+	   ORDER_DATE,
+	   ACTION,
+	   STATUS,
+	   SYMBOL,
+	   QUANTITY,
+	   PRICE,
+	  (QUANTITY*PRICE) NET_AMOUNT  
+FROM ORDERS_HISTORY 
+WHERE STATUS = 'FILLED']]></db:sql>
+		</db:select>
+		<ee:transform doc:id="ddf747f8-94d3-4296-871f-a6274c57e76d">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	order_date: payload01.order_date as String default "",
+	symbol: payload01.symbol,
+	quantity: payload01.quantity,
+	price: payload01.price,
+	net_amount: payload01.net_amount default 0,
+	action: payload01.action,
+	tx_number: payload01.tx_number,
+	status: payload01.status
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\order:application\json:mulesoftapi-config">
+        <db:insert doc:name="Create Order" doc:id="60e636dc-1b99-432d-bd37-46e9b9564d3e" config-ref="postgres" autoGenerateKeys="true" target="tx_number" targetValue="#[payload.generatedKeys[0]]">
+			<db:sql ><![CDATA[INSERT INTO ORDERS_HISTORY (ORDER_DATE,ACTION,STATUS,SYMBOL,QUANTITY,PRICE) 
+VALUES (current_timestamp,:ACTION,'PENDING',:SYMBOL,:QUANTITY,:PRICE)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	ACTION : payload.action,
+	SYMBOL : payload.symbol,
+	QUANTITY : payload.quantity,
+	PRICE : payload.price
+}]]]></db:input-parameters>
+			<db:auto-generated-keys-column-names >
+				<db:auto-generated-keys-column-name value="tx_number" />
+			</db:auto-generated-keys-column-names>
+		</db:insert>
+    </flow>
+</mule>

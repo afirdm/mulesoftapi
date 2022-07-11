@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="mulesoftapi-suite.xml" />
+	<munit:test name="get:\orders:mulesoftapi-config-test" doc:id="5d83fd23-b3cd-464a-98d2-cf94d8f8ca17" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Get Orders By Year" doc:id="f99e1b68-bd9c-4bc9-b991-3f836c532446" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="3a9175bc-5521-4e84-a7ae-83d65b80ae7a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://getordersmulesoftapiconfigtest\mock_payload1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getordersmulesoftapiconfigtest\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="year" value="#[output application/java --- readUrl('classpath://getordersmulesoftapiconfigtest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="b3f8336e-1350-40e4-b84e-ebb97a689841" >
+				<munit:payload value="#[readUrl('classpath://getordersmulesoftapiconfigtest\set-event_payload1.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getordersmulesoftapiconfigtest\set-event_attributes1.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getordersmulesoftapiconfigtest\set-event_variable_1.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\orders:mulesoftapi-config" doc:id="44d5e121-13d5-483b-8659-9631550762d3" name="get:\orders:mulesoftapi-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="5cd28a57-e7f0-4b38-977b-16e89bebad5d" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getordersmulesoftapiconfigtest::assert_expression_payload1
+---
+assert_expression_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get:\orders-filled:mulesoftapi-config-test" doc:id="7d2a4c8e-6752-41a4-924b-85b6b8eed3e0" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Get Orders Filled" doc:id="af634ffe-a3eb-477b-9992-f5ffed079e43" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="a6e07b5b-e5ec-4c57-913d-04e05feddfd4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://getordersfilledmulesoftapiconfigtest\mock_payload1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getordersfilledmulesoftapiconfigtest\mock_variable_1.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="18eff717-f997-462f-9903-afb07999d264" >
+				<munit:payload value="#[readUrl('classpath://getordersfilledmulesoftapiconfigtest\set-event_payload1.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getordersfilledmulesoftapiconfigtest\set-event_attributes1.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getordersfilledmulesoftapiconfigtest\set-event_variable_1.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\orders-filled:mulesoftapi-config" doc:id="1903c2f7-65da-4e7b-92b5-96a38eaf8b8d" name="get:\orders-filled:mulesoftapi-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="c50ff815-d662-4213-9cd1-8e4aa1d758c4" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getordersfilledmulesoftapiconfigtest::assert_expression_payload1
+---
+assert_expression_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\order:application\json:mulesoftapi-config-test" doc:id="f32d419a-5ab6-42f1-911d-d6d0e28ac0e9" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Create Order" doc:id="946aa882-fa09-4f4d-93e9-18842b9c424f" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="60e636dc-1b99-432d-bd37-46e9b9564d3e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://postorderapplicationjsonmulesoftapiconfigtest\mock_payload1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://postorderapplicationjsonmulesoftapiconfigtest\mock_attributes1.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postorderapplicationjsonmulesoftapiconfigtest\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="tx_number" value="#[output application/java --- readUrl('classpath://postorderapplicationjsonmulesoftapiconfigtest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="c71db5e7-9a32-44da-9dc8-5f9fc7aff3de" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postorderapplicationjsonmulesoftapiconfigtest\set-event_payload1.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postorderapplicationjsonmulesoftapiconfigtest\set-event_attributes1.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postorderapplicationjsonmulesoftapiconfigtest\set-event_variable_1.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\order:application\json:mulesoftapi-config" doc:id="b704d945-bdb9-42aa-a739-7c38cd2e3410" name="post:\order:application\json:mulesoftapi-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="e91cd98b-c260-4583-b7df-001feab8e44e" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postorderapplicationjsonmulesoftapiconfigtest::assert_expression_payload1
+---
+assert_expression_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="mulesoftapi-console-test" doc:id="61232e76-ca86-433d-a889-098cd42ef97b" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Console" doc:id="6ed0625f-897c-496c-938f-3ce69750fc95" processor="apikit:console">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="6b81e7d3-511f-4c9d-91d9-790beefc715f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://mulesoftapiconsoletest\mock_payload.dwl')]" mediaType="text/html" />
+					<munit-tools:attributes value="#[readUrl('classpath://mulesoftapiconsoletest\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftapiconsoletest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftapiconsoletest\mock_variable_1.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="22406554-66b7-4e31-8d1e-19d82bb55bd3" >
+				<munit:payload value="#[readUrl('classpath://mulesoftapiconsoletest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftapiconsoletest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to mulesoftapi-console" doc:id="b8a0c15f-54dc-470e-b1cf-172cbe2b92bc" name="mulesoftapi-console"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="d2ed8968-dfb7-4d28-8602-5ed2d02c8c07" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import mulesoftapiconsoletest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="mulesoftapi-main-test" doc:id="8b800118-0e4e-4195-b825-f59d54fed41e" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="1a0f8ab0-6dff-48cc-a8fd-18f55cb6dedc" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f9b4fb54-679c-4907-a339-735be11ddb92" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://mulesoftapimaintest\mock_payload1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_3.dwl')]" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_4.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="f4ad7961-9ee4-4c4c-a3d8-111204f3f310" >
+				<munit:payload value="#[readUrl('classpath://mulesoftapimaintest\set-event_payload1.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftapimaintest\set-event_attributes1.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to mulesoftapi-main" doc:id="1a499ba8-c2bf-47a0-ae9b-6f7bc673ea68" name="mulesoftapi-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="eb62f430-229a-4aa5-9cbf-d3a0880cd72a" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import mulesoftapimaintest::assert_expression_payload1
+---
+assert_expression_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="mulesoftapi-main-404" doc:id="e535501e-85f6-4e17-8d4a-cfe112882047">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="43ec7077-cb5c-4449-8467-26190994e322" processor="apikit:router">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="f9b4fb54-679c-4907-a339-735be11ddb92" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+					<munit-tools:variables>
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="year" value="#[output application/java --- readUrl('classpath://mulesoftapimaintest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_2.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="32c12469-9e18-44ac-9bf4-ca2946443bfe">
+				<munit:payload value="#[readUrl('classpath://mulesoftapimaintest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftapimaintest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="74615ea4-b266-4865-8db4-60a381e82f98">
+				<flow-ref doc:name="Flow-ref to mulesoftapi-main" doc:id="225eaafe-a9a1-498e-a90b-5b95fb9053ee" name="mulesoftapi-main" />
+				<error-handler>
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="eeab9da0-bd15-4590-94f2-ab2e5cab3658">
+						<logger level="INFO" doc:name="Logger" doc:id="3dc941b7-a1ae-4145-a8d0-b8fc2d49ac7b" message="continue..." />
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="6ec6d2fb-5e58-4a9a-a871-6093266b4344" is="#[MunitTools::equalTo('Resource not found')]" expression="#[payload.error]" />
+
+		</munit:validation>
+	
+</munit:test>
+
+<munit:test name="mulesoftapi-main-400" doc:id="d9064dc7-8120-4bad-816d-ea64e2297b4d">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="eed68931-0fe6-4441-bf9d-b8ab204069da" processor="apikit:router">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="f9b4fb54-679c-4907-a339-735be11ddb92" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:error typeId="APIKIT:BAD_REQUEST" />
+					<munit-tools:variables>
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="year" value="#[output application/java --- readUrl('classpath://mulesoftapimaintest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_2.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="9c32511b-b79c-4ad1-8d96-79941aac6e06">
+				<munit:payload value="#[readUrl('classpath://mulesoftapimaintest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftapimaintest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="c367de9e-0e17-40a7-aa65-22ba675c5ae4">
+				<flow-ref doc:name="Flow-ref to mulesoftapi-main" doc:id="6cbdd6bd-04e5-446e-b298-dcb87323a04b" name="mulesoftapi-main" />
+				<error-handler>
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="3f03fb56-2cf1-430f-b4b2-25f00c1c71d3">
+						<logger level="INFO" doc:name="Logger" doc:id="5b3bf9f0-538f-4b7a-bba7-94f66c617568" message="continue..." />
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="47c44d18-faf7-4173-98d6-58352728c9c7" is="#[MunitTools::equalTo('Bad request')]" expression="#[payload.error]" />
+
+		</munit:validation>
+	
+</munit:test>
+<munit:test name="mulesoftapi-main-405" doc:id="a8f1a30c-eca8-4b8b-a6ca-d2f45c4c019a">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="c8dba7c9-4e71-45df-a4ea-c18783736791" processor="apikit:router">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="f9b4fb54-679c-4907-a339-735be11ddb92" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:error typeId="APIKIT:METHOD_NOT_ALLOWED" />
+					<munit-tools:variables>
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="year" value="#[output application/java --- readUrl('classpath://mulesoftapimaintest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_2.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="29274f25-b589-4d1b-8ec7-875ee3fc5b50">
+				<munit:payload value="#[readUrl('classpath://mulesoftapimaintest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftapimaintest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="1c22f154-bfd9-413d-a118-a0a31c72e34c">
+				<flow-ref doc:name="Flow-ref to mulesoftapi-main" doc:id="616389a9-7392-4f35-b46a-ef3f9fe1398d" name="mulesoftapi-main" />
+				<error-handler>
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="bed6b1b9-d6b8-4f4a-9a00-bbdacef75b2b">
+						<logger level="INFO" doc:name="Logger" doc:id="12e78903-074d-4b95-8767-84ada7ce542a" message="continue..." />
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="2616bc8e-6a07-4057-81bf-4b7f4e649fe7" is="#[MunitTools::equalTo('Method not allowed')]" expression="#[payload.error]" />
+
+		</munit:validation>
+	
+</munit:test>
+<munit:test name="mulesoftapi-main-406" doc:id="d945b25a-80f3-416a-bbc5-5476fe9377eb">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="41b5a033-06ac-46b2-b28f-7e25b2ada73a" processor="apikit:router">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="f9b4fb54-679c-4907-a339-735be11ddb92" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:error typeId="APIKIT:NOT_ACCEPTABLE" />
+					<munit-tools:variables>
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="year" value="#[output application/java --- readUrl('classpath://mulesoftapimaintest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_2.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="9e1a70b8-8d66-4c54-9bf5-783beea31e74">
+				<munit:payload value="#[readUrl('classpath://mulesoftapimaintest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftapimaintest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="343044f2-9195-4e10-93fc-48a7c9d86dc5">
+				<flow-ref doc:name="Flow-ref to mulesoftapi-main" doc:id="1fd95f3d-4bf4-42ae-a754-846a535076fc" name="mulesoftapi-main" />
+				<error-handler>
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="fe383320-6b08-455d-a423-01b71044085a">
+						<logger level="INFO" doc:name="Logger" doc:id="29b9cf64-8e8d-4115-a90c-b6acbb885604" message="continue..." />
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="7a47c56f-d7fc-4608-ad01-4ce7398e569a" is="#[MunitTools::equalTo('Not acceptable')]" expression="#[payload.error]" />
+
+		</munit:validation>
+	
+</munit:test>
+<munit:test name="mulesoftapi-main-415" doc:id="ee950fee-6e8d-4b73-a82b-f5abd83fc52e">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="b9f9ec20-e7de-494c-95ef-33578eede421" processor="apikit:router">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="f9b4fb54-679c-4907-a339-735be11ddb92" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:error typeId="APIKIT:UNSUPPORTED_MEDIA_TYPE" />
+					<munit-tools:variables>
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="year" value="#[output application/java --- readUrl('classpath://mulesoftapimaintest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_2.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="3f827d3b-f23d-4425-9a77-5b63c73c5080">
+				<munit:payload value="#[readUrl('classpath://mulesoftapimaintest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftapimaintest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="66f147f1-58da-442d-9733-5796a2fb9cc2">
+				<flow-ref doc:name="Flow-ref to mulesoftapi-main" doc:id="f6ceb51c-ea84-418a-9332-b531169c7656" name="mulesoftapi-main" />
+				<error-handler>
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="39c8d1b1-111c-430a-b8f0-fc6d49317ea6">
+						<logger level="INFO" doc:name="Logger" doc:id="b75cbf8b-c213-413b-b380-91ff6ece66d7" message="continue..." />
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="909e0221-a221-45fe-981c-65465c4fd60f" is="#[MunitTools::equalTo('Unsupported media type')]" expression="#[payload.error]" />
+
+		</munit:validation>
+	
+</munit:test>
+<munit:test name="mulesoftapi-main-501" doc:id="2aec24f4-1308-4a03-a3a8-536898baca46">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="78ad511c-3a05-4bb5-8aa7-2fd4b8260635" processor="apikit:router">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="f9b4fb54-679c-4907-a339-735be11ddb92" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:error typeId="APIKIT:NOT_IMPLEMENTED" />
+					<munit-tools:variables>
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="year" value="#[output application/java --- readUrl('classpath://mulesoftapimaintest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftapimaintest\mock_variable_2.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="27da2949-2454-4ace-9a45-5b9773017a80">
+				<munit:payload value="#[readUrl('classpath://mulesoftapimaintest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftapimaintest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="b6393006-4094-40c3-a51f-ab6a56487b54">
+				<flow-ref doc:name="Flow-ref to mulesoftapi-main" doc:id="ee893eb1-495d-47c7-af6a-aaab66d9c4f6" name="mulesoftapi-main" />
+				<error-handler>
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="cf9c82dd-fd98-446b-836f-89e36598d3d4">
+						<logger level="INFO" doc:name="Logger" doc:id="9289ff0c-2b5b-4777-9c6f-47251734712b" message="continue..." />
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="bcc93de7-4d33-48b9-bb1e-4e36edd4bdcb" is="#[MunitTools::equalTo('Not Implemented')]" expression="#[payload.error]" />
+
+		</munit:validation>
+	
+</munit:test>
+	<munit:test name="mulesoftapi-console-404-test" doc:id="74445452-7fd5-4ca9-92b1-eb5ace5f01f5" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Console" doc:id="7dcf5e39-618a-48eb-9ba1-142384461d34" processor="apikit:console">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="6b81e7d3-511f-4c9d-91d9-790beefc715f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftapiconsoletest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftapiconsoletest\mock_variable_1.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="ff3611d1-9a42-4c04-bd83-d76b4e282632" >
+				<munit:payload value="#[readUrl('classpath://mulesoftapiconsoletest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftapiconsoletest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="3a68157a-b95e-43ea-a97e-7175b70502a8" >
+				<flow-ref doc:name="Flow-ref to mulesoftapi-console" doc:id="3adbf0a8-1829-47db-98fe-7f158bd1a4c2" name="mulesoftapi-console" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="4caf43a6-26f6-4a20-9f60-410294880821" >
+						<logger level="INFO" doc:name="Logger" doc:id="348e2538-440f-4295-bdf3-d69265c75402" message="Continue..."/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="a1509ba6-058a-4222-ba04-6312474f7ff2" is="#[MunitTools::equalTo('Resource not found')]" expression="#[payload.error]"/>
+
+		</munit:validation>
+	
+</munit:test>
+</mule>

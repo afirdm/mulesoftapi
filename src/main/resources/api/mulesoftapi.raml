@@ -1,0 +1,38 @@
+#%RAML 1.0
+title: Order API
+baseUri: http://mulesoftchallengeapi.us-e2.cloudhub.io/api
+description: Order API Challenge
+mediaType:
+  - application/json
+protocols:
+  - HTTP
+/order:
+  post:
+    displayName: New Order
+    description: Create an Order
+    responses:
+      "201":
+        description: Order Created
+    body:
+      application/json:
+        example: !include examples/new-order.raml
+/orders:
+  get:
+    displayName: Retrieve orders
+    description: List of orders
+    queryParameters:
+      year:
+        example: "2022"
+        type: string
+    responses:
+      "200":
+        body:
+          example: !include examples/orders.raml
+/orders-filled:
+  get:
+    displayName: Retrieve orders filled
+    description: List of orders in filled status
+    responses:
+      "200":
+        body:
+          example: !include examples/orders-filled.raml
