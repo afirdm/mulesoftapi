@@ -1,0 +1,53 @@
+{
+  "$id": "https://example.com/arrays.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": [
+        "symbol",
+        "quantity",
+        "price",
+        "action"
+    ],
+    "properties": {
+        "symbol": {
+            "type": "string",
+            "default": "",
+            "title": "The symbol Schema",
+            "examples": [
+                "CRM"
+            ]
+        },
+        "quantity": {
+            "type": "integer",
+            "default": 0,
+            "title": "The quantity Schema",
+            "examples": [
+                1200
+            ]
+        },
+        "price": {
+            "type": "integer",
+            "default": 0,
+            "title": "The price Schema",
+            "examples": [
+                203
+            ]
+        },
+        "action": {
+            "type": "string",
+            "default": "",
+            "title": "The action Schema",
+            "examples": [
+                "SELL"
+            ]
+        }
+    },
+    "examples": [{
+        "symbol": "CRM",
+        "quantity": 1200,
+        "price": 203,
+        "action": "SELL"
+    }]
+}
